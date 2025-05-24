@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+
+<robot name="bgr" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Start GZ or Ignition depending on ROS 2 Version -->
+  <xacro:arg name="is_ignition" default="true"/>
+
+  <!-- Include Gazebo Parameters -->
+  <xacro:include filename="$(find bgr_description)/urdf/bgr_gazebo.xacro" />
+
+  <!-- Include ros2_control Plugins -->
+  <xacro:include filename="$(find bgr_description)/urdf/bgr_ros2_control.xacro" />
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.019114 -3.8883E-06 -0.14725" rpy="0 0 0" />
+      <mass value="780.36" />
+      <inertia ixx="50.803" ixy="0.0043235" ixz="-10.443" iyy="373.42" iyz="0.000307" izz="385.7" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/visual/base_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/collision/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="Wheel_rl">
+    <inertial>
+      <origin xyz="1.0355 -0.6546 0.10531" rpy="0 0 0" />
+      <mass value="780.35" />
+      <inertia ixx="54.082" ixy="0.0042937" ixz="-16.925" iyy="375.37" iyz="0.00063924" izz="389.69" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/visual/Wheel_rl.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/collision/Wheel_rl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="Wheel_rl_joint" type="continuous">
+    <origin xyz="-1.0184 0.6546 -0.23145" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="Wheel_rl" />
+    <axis xyz="0 -1 0" />
+    <limit effort="100" velocity="100" />
+    <dynamics damping="0.1" friction="0.1" />
+  </joint>
+  <link name="Wheel_rr">
+    <inertial>
+      <origin xyz="0.93618 0.6546 -0.45491" rpy="0 0 0" />
+      <mass value="780.32" />
+      <inertia ixx="131.72" ixy="0.0043475" ixz="142.53" iyy="375.35" iyz="-0.0020214" izz="312.03" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/visual/Wheel_rr.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/collision/Wheel_rr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="Wheel_rr_joint" type="continuous">
+    <origin xyz="-1.0184 -0.6546 -0.23145" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="Wheel_rr" />
+    <axis xyz="0 1 0" />
+    <limit effort="10" velocity="10" />
+    <dynamics damping="0.1" friction="0.1" />
+  </joint>
+  <link name="Steering_fl">
+    <inertial>
+      <origin xyz="-0.51969 -0.59974 0.039266" rpy="0 0 0" />
+      <mass value="780.33" />
+      <inertia ixx="55.241" ixy="6.2404" ixz="-39.186" iyy="373.28" iyz="0.74716" izz="381.37" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/visual/Steering_fl.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/collision/Steering_fl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="Steering_fl_joint" type="revolute">
+    <origin xyz="0.52217 0.59083 -0.23141" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="Steering_fl" />
+    <axis xyz="0.086664 0 -0.99624" />
+    <limit lower="-0.6" upper="0.6" effort="100" velocity="100" />
+    <dynamics damping="0.1" friction="0.1" />
+    <mimic joint="Steering_fr_joint" multiplier="-1" offset="0" />
+  </joint>
+  <link name="Wheel_fl">
+    <inertial>
+      <origin xyz="0.44201 -0.68845 0.22769" rpy="0 0 0" />
+      <mass value="780.35" />
+      <inertia ixx="180.65" ixy="4.049" ixz="-163.48" iyy="375.27" iyz="3.3568" izz="263.19" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/visual/Wheel_fl.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/collision/Wheel_fl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="Wheel_fl_joint" type="continuous">
+    <origin xyz="0.0013523 0.069719 0.00011764" rpy="0 0 0" />
+    <parent link="Steering_fl" />
+    <child link="Wheel_fl" />
+    <axis xyz="-0.019393 -0.99981 -0.001687" />
+    <limit effort="100" velocity="100" />
+    <dynamics damping="0.1" friction="0.1" />
+  </joint>
+  <link name="Steering_fr">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="780.33" />
+      <inertia ixx="55.241" ixy="6.2404" ixz="-39.186" iyy="373.28" iyz="0.74716" izz="381.37" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/visual/Steering_fr.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/collision/Steering_fr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="Steering_fr_joint" type="revolute">
+    <origin xyz="0.52217 -0.59093 -0.23141" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="Steering_fr" />
+    <axis xyz="-0.086664 0 0.99624" />
+    <limit lower="-0.6" upper="0.6" effort="100" velocity="100" />
+    <dynamics damping="0.1" friction="0.1" />
+  </joint>
+  <link name="Wheel_fr">
+    <inertial>
+      <origin xyz="-0.48573 0.69661 -0.0036093" rpy="0 0 0" />
+      <mass value="780.33" />
+      <inertia ixx="67.861" ixy="10.853" ixz="-67.804" iyy="374.96" iyz="2.3457" izz="376.27" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/visual/Wheel_fr.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://bgr_description/meshes/collision/Wheel_fr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="Wheel_fr_joint" type="continuous">
+    <origin xyz="-0.0024124 -0.06969 -0.00020985" rpy="0 0 0" />
+    <parent link="Steering_fr" />
+    <child link="Wheel_fr" />
+    <axis xyz="0.034595 0.9994 0.0030095" />
+    <limit effort="100" velocity="100" />
+    <dynamics damping="0.1" friction="0.1" />
+  </joint>
+</robot>

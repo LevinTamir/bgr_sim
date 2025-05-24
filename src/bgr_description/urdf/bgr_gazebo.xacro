@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<robot name="bgr" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Base --> 
+  <gazebo reference="base_link">
+    <mu1>0.0001</mu1>
+    <mu2>0.0001</mu2>
+    <!-- <kp>1000000000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1> -->
+  </gazebo>
+
+  <!-- Wheels --> 
+  <gazebo reference="wheel_rl">
+    <mu1>100.0</mu1>
+    <mu2>100.0</mu2>
+    <!-- <kp>1000000000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1> -->
+  </gazebo>
+  
+  <gazebo reference="wheel_rr">
+    <mu1>100.0</mu1>
+    <mu2>100.0</mu2>
+    <!-- <kp>1000000000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1> -->
+  </gazebo>
+
+  <gazebo reference="Steering_fl">
+    <mu1>100.0</mu1>
+    <mu2>100.0</mu2>
+    <!-- <kp>1000000000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1> -->
+  </gazebo>
+
+  <gazebo reference="wheel_fl">
+    <mu1>100.0</mu1>
+    <mu2>100.0</mu2>
+    <!-- <kp>1000000000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1> -->
+  </gazebo>
+
+  <gazebo reference="Steering_fr">
+    <mu1>100.0</mu1>
+    <mu2>100.0</mu2>
+    <!-- <kp>1000000000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1> -->
+  </gazebo>
+
+  <gazebo reference="wheel_fr">
+    <mu1>100.0</mu1>
+    <mu2>100.0</mu2>
+    <!-- <kp>1000000000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1> -->
+  </gazebo>
+
+  <!-- ROS 2 Control -->
+  <gazebo>
+    <!-- ROS 2 Humble -->
+    <xacro:if value="$(arg is_ignition)">
+      <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <parameters>$(find bgr_controller)/config/bgr_controllers.yaml</parameters>
+      </plugin>
+    </xacro:if>
+
+    <!-- ROS 2 Iron or above -->
+    <xacro:unless value="$(arg is_ignition)">
+      <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters>$(find bgr_controller)/config/bgr_controllers.yaml</parameters>
+      </plugin>
+    </xacro:unless>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <topic>joint_states</topic>
+      <joint_name>Wheel_rl_joint</joint_name>
+      <joint_name>Wheel_rr_joint</joint_name>
+      <joint_name>Wheel_fl_joint</joint_name>
+      <joint_name>Wheel_fr_joint</joint_name>
+      <joint_name>Steering_fl_joint</joint_name>
+      <joint_name>Steering_fr_joint</joint_name>
+    </plugin>
+  </gazebo>
+
+</robot>
